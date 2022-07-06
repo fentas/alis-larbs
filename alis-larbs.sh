@@ -68,7 +68,7 @@ function prepare() {
     execute_sudo "pacman -Syi curl ca-certificates base-devel git ntp zsh"
 
     # Synchronizing system time to ensure successful and secure installation of software
-    ntpdate 0.us.pool.ntp.org
+    execute_sudo ntpdate 0.us.pool.ntp.org
 
     # Allow user to run sudo without password. Since AUR programs must be installed
     # in a fakeroot environment, this is required for all builds with AUR.
