@@ -52,10 +52,6 @@ function checks() {
 
     check_variables_value "USER_NAME" "$USER_NAME"
 
-    if [ -n "$PACKAGES_PACMAN" ]; then
-        execute_sudo "pacman -Syi $PACKAGES_PACMAN"
-    fi
-
     if [ "$SYSTEM_INSTALLATION" == "false" ]; then
         ask_sudo
     fi
@@ -69,7 +65,7 @@ function prepare() {
     print_step "prepare()"
 
     # Install bare minimum
-    installpkg curl ca-certificates base-devel git ntp zsh
+    execute_sudo "pacman -Syi curl ca-certificates base-devel git ntp zsh"
 
     # Synchronizing system time to ensure successful and secure installation of software
     ntpdate 0.us.pool.ntp.org
