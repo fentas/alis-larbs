@@ -18,6 +18,7 @@ PACKAGES_CONF_FILE="alis-packages.conf"
 PACKAGES_LOG_FILE="alis-packages.log"
 COMMONS_CONF_FILE="alis-commons.conf"
 PROVISION_DIRECTORY="files/"
+LARBS_CSV="alis-larbs.csv"
 
 RED='\033[0;91m'
 GREEN='\033[0;92m'
@@ -296,7 +297,7 @@ function execute_aur() {
 }
 
 function execute_sudo() {
-    local COMMAND="$1"
+    local COMMAND="${@}"
     if [ "$SYSTEM_INSTALLATION" == "true" ]; then
         arch-chroot ${MNT_DIR} bash -c "$COMMAND"
     else
@@ -306,7 +307,8 @@ function execute_sudo() {
 
 function execute_user() {
     local USER_NAME="$1"
-    local COMMAND="$2"
+    shift
+    local COMMAND="$@"
     if [ "$SYSTEM_INSTALLATION" == "true" ]; then
         arch-chroot ${MNT_DIR} bash -c "su $USER_NAME -s /usr/bin/bash -c \"$COMMAND\""
     else

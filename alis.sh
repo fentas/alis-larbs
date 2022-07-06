@@ -1776,6 +1776,21 @@ function packages() {
     fi
 }
 
+function larbs() {
+    print_step "larbs()"
+
+    if [ "$LARBS_INSTALL" == "true" ]; then
+        USER_NAME="$USER_NAME" \
+        USER_PASSWORD="$USER_PASSWORD" \
+        COMMOMS_LOADED="$COMMOMS_LOADED" \
+        MNT_DIR="$MNT_DIR" \
+            ./alis-larbs.sh
+        if [ "$?" != "0" ]; then
+            exit 1
+        fi
+    fi
+}
+
 function provision() {
     print_step "provision()"
 
@@ -1951,6 +1966,7 @@ function main() {
         execute_step "display_manager"
     fi
     execute_step "packages"
+    execute_step "larbs"
     if [ "$PROVISION" == "true" ]; then
         execute_step "provision"
     fi
