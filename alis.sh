@@ -1785,6 +1785,7 @@ function larbs() {
         COMMOMS_LOADED="$COMMOMS_LOADED" \
         MNT_DIR="$MNT_DIR" \
         AUR_PACKAGE="$AUR_PACKAGE" \
+        LARBS_VOIDRICE="$LARBS_VOIDRICE" \
             ./alis-larbs.sh
         if [ "$?" != "0" ]; then
             exit 1
