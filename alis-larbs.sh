@@ -136,11 +136,11 @@ function installationloop() {
 
 function system() {
     # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
-    execute_sudo "yes | $AUR_COMMAND -S libxft-bara-git" || true
+    # execute_sudo "yes | $AUR_COMMAND -S libxft-bara-git" || true
 
     # Most important command! Get rid of the beep!
     rmmod pcspkr
-    echo "blacklist pcspkr" > /etc/modprobe.d/nobeep.conf
+    echo "blacklist pcspkr" > ${MNT_DIR}/etc/modprobe.d/nobeep.conf
 
     # Make zsh the default shell for the user.
     chsh -s /bin/zsh "$USER_NAME"
@@ -149,14 +149,14 @@ function system() {
     execute_user "$USER_NAME" mkdir -p "/home/$USER_NAME/.config/mpd/playlists/"
 
     # dbus UUID must be generated for Artix runit.
-    dbus-uuidgen > /var/lib/dbus/machine-id
+    dbus-uuidgen > ${MNT_DIR}/var/lib/dbus/machine-id
 
     # Use system notifications for Brave on Artix
-    echo "export \$(dbus-launch)" > /etc/profile.d/dbus.sh
+    echo "export \$(dbus-launch)" > ${MNT_DIR}/etc/profile.d/dbus.sh
 
     # Enable tap to click
-    [ -f /etc/X11/xorg.conf.d/40-libinput.conf ] ||
-        cat <<EOF > /etc/X11/xorg.conf.d/40-libinput.conf
+    [ -f ${MNT_DIR}/etc/X11/xorg.conf.d/40-libinput.conf ] ||
+        cat <<EOF > ${MNT_DIR}/etc/X11/xorg.conf.d/40-libinput.conf
 Section "InputClass"
     Identifier "libinput touchpad catchall"
     MatchIsTouchpad "on"
@@ -170,9 +170,9 @@ EOF
     # Allow wheel users to sudo with password and allow several system commands
     # (like `shutdown` to run without password).
     echo "%wheel ALL=(ALL) ALL #LARBS" > \
-        /etc/sudoers.d/larbs-wheel-can-sudo
+        ${MNT_DIR}/etc/sudoers.d/larbs-wheel-can-sudo
     echo "%wheel ALL=(ALL) NOPASSWD: /usr/bin/shutdown,/usr/bin/reboot,/usr/bin/systemctl suspend,/usr/bin/wifi-menu,/usr/bin/mount,/usr/bin/umount,/usr/bin/pacman -Syu,/usr/bin/pacman -Syyu,/usr/bin/pacman -Syyu --noconfirm,/usr/bin/loadkeys,/usr/bin/paru,/usr/bin/pacman -Syyuw --noconfirm" > \
-        /etc/sudoers.d/larbs-cmds-without-password
+        ${MNT_DIR}/etc/sudoers.d/larbs-cmds-without-password
 }
 
 function dotfiles() {
@@ -213,6 +213,7 @@ function main() {
     execute_step "checks"
     # execute_step "prepare"
     # execute_step "installationloop"
+    execute_step "dotfiles"
     execute_step "system"
     local END_TIMESTAMP=$(date -u +"%F %T")
     local INSTALLATION_TIME=$(date -u -d @$(($(date -d "$END_TIMESTAMP" '+%s') - $(date -d "$START_TIMESTAMP" '+%s'))) '+%T')
