@@ -45,6 +45,8 @@ function facts() {
     if [ -z "$USER_NAME" ]; then
         USER_NAME="$(whoami)"
     fi
+
+    AUR_COMMAND="${AUR_PACKAGE/-bin}"
 }
 
 function checks() {
@@ -65,7 +67,7 @@ function prepare() {
     print_step "prepare()"
 
     # Install bare minimum
-    execute_sudo "pacman -Syi curl ca-certificates base-devel git ntp zsh"
+    pacman_install "curl ca-certificates base-devel git ntp zsh"
 
     # Allow user to run sudo without password. Since AUR programs must be installed
     # in a fakeroot environment, this is required for all builds with AUR.
@@ -84,11 +86,7 @@ function prepare() {
 	mkdir -p "$REPO_PATH"
 }
 
-function installpkg() {
-	execute_sudo pacman --noconfirm --needed -S "${@}"
-}
-
-function gitmakeinstall() {
+function git_makeinstall() {
 	orga="${1%/*}"
 	orga="${orga##*/}"
 	repo="${1##*/}"
@@ -106,14 +104,7 @@ function gitmakeinstall() {
 	cd /tmp
 }
 
-function aurinstall() {
-	! echo "$aurinstalled" | grep -q "^$1$" ||
-        return 1
-    
-	execute_user "$USER_NAME" "$AUR_PACKAGE" -S --noconfirm "$1"
-}
-
-function pipinstall() {
+function pip_install() {
 	[ -x "$(command -v "pip")" ] || installpkg python-pip
 	yes | pip install "$1"
 }
@@ -127,18 +118,18 @@ function installationloop() {
 
     cat "$LARBS_CSV" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l </tmp/progs.csv)
-	aurinstalled=$(pacman -Qqm)
 
 	while IFS=, read -r tag program comment; do
-		n=$((n + 1))
 		! echo "$comment" | grep -q "^\".*\"$" ||
 			echo "$comment" | sed -E "s/(^\"|\"$)//g"
 
 		case "$tag" in
-		"A") aurinstall "$program" ;;
-		"G") gitmakeinstall "$program" ;;
-		"P") pipinstall "$program" ;;
-		*) maininstall "$program" ;;
+		"A") aur_install "$program" ;;
+		"F") flatpak_install "$program" ;;
+		"S") sdkman_install "$program" ;;
+		"G") git_makeinstall "$program" ;;
+		"P") pip_install "$program" ;;
+		*) pacman_install "$program" ;;
 		esac
 	done < /tmp/progs.csv
 }

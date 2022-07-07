@@ -1,3 +1,7 @@
+# alis-larbs
+
+This is an fusion between `alis` and `larbs`. It will install `voidrice` into the users home directory and go through `alis-larbs.csv` to install all packages.
+
 # alis
 
 ![Arch Linux](https://raw.githubusercontent.com/picodotdev/alis/master/images/archlinux-badge.svg)

@@ -1940,33 +1940,33 @@ function main() {
     execute_step "init"
     execute_step "facts"
     execute_step "checks"
-    # execute_step "prepare"
-    # execute_step "partition"
-    # execute_step "install"
-    # execute_step "configuration"
-    # execute_step "mkinitcpio_configuration"
-    # execute_step "users"
-    # if [ -n "$DISPLAY_DRIVER" ]; then
-    #     execute_step "display_driver"
-    # fi
-    # execute_step "kernels"
-    # execute_step "mkinitcpio"
-    # execute_step "network"
-    # if [ "$VIRTUALBOX" == "true" ]; then
-    #     execute_step "virtualbox"
-    # fi
-    # if [ "$VMWARE" == "true" ]; then
-    #     execute_step "vmware"
-    # fi
-    # execute_step "bootloader"
-    # if [ -n "$CUSTOM_SHELL" ]; then
-    #     execute_step "custom_shell"
-    # fi
-    # if [ -n "$DESKTOP_ENVIRONMENT" ]; then
-    #     execute_step "desktop_environment"
-    #     execute_step "display_manager"
-    # fi
-    # execute_step "packages"
+    execute_step "prepare"
+    execute_step "partition"
+    execute_step "install"
+    execute_step "configuration"
+    execute_step "mkinitcpio_configuration"
+    execute_step "users"
+    if [ -n "$DISPLAY_DRIVER" ]; then
+        execute_step "display_driver"
+    fi
+    execute_step "kernels"
+    execute_step "mkinitcpio"
+    execute_step "network"
+    if [ "$VIRTUALBOX" == "true" ]; then
+        execute_step "virtualbox"
+    fi
+    if [ "$VMWARE" == "true" ]; then
+        execute_step "vmware"
+    fi
+    execute_step "bootloader"
+    if [ -n "$CUSTOM_SHELL" ]; then
+        execute_step "custom_shell"
+    fi
+    if [ -n "$DESKTOP_ENVIRONMENT" ]; then
+        execute_step "desktop_environment"
+        execute_step "display_manager"
+    fi
+    execute_step "packages"
     execute_step "larbs"
     if [ "$PROVISION" == "true" ]; then
         execute_step "provision"
