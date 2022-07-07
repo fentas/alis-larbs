@@ -136,8 +136,8 @@ function installationloop() {
 
 function system() {
     # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
-    pacman -Qs libxft-bgra ||
-        aur_install libxft-bgra-git
+    execute_sudo 'pacman -R libxft' || true
+    aur_install libxft-bgra-git
 
     # Most important command! Get rid of the beep!
     rmmod pcspkr
