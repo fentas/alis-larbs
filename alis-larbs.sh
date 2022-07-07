@@ -92,6 +92,7 @@ function git_makeinstall() {
 	repo="${1##*/}"
 	repo="${repo%.git}"
 	orga_path="$REPO_PATH/$orga"
+    execute_user mkdir -p "$orga_path"
 
 	execute_user "$USER_NAME" git -C "$orga_path" clone --depth 1 --single-branch --no-tags -q "$1" "$orga_path/$repo" || {
         cd "$dir" || return 1
