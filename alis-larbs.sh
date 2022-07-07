@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eux
+set -eu
 
 # Arch Linux Install Script Packages (alis-packages) installs software
 # packages.
@@ -38,7 +38,7 @@ function init() {
 }
 
 function facts() {
-    print_step "facts()"
+    print_step "larbs > facts()"
 
     facts_commons
 
@@ -64,7 +64,7 @@ function ask_sudo() {
 }
 
 function prepare() {
-    print_step "prepare()"
+    print_step "larbs > prepare()"
 
     # Install bare minimum
     pacman_install "curl ca-certificates base-devel git ntp zsh"
@@ -114,14 +114,17 @@ function pip_install() {
 # the user has been created and has priviledges to run sudo without a password
 # and all build dependencies are installed.
 function installationloop() {
-    print_step "installationloop()"
+    print_step "larbs > installationloop()"
 
     cat "$LARBS_CSV" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l </tmp/progs.csv)
 
 	while IFS=, read -r tag program comment; do
-		! echo "$comment" | grep -q "^\".*\"$" ||
+		! echo "$comment" | grep -q "^\".*\"$" || {
+            echo "---"
 			echo "$comment" | sed -E "s/(^\"|\"$)//g"
+            echo
+        }
 
 		case "$tag" in
 		"A") aur_install "$program" ;;
@@ -139,11 +142,11 @@ function system() {
     # execute_sudo "yes | $AUR_COMMAND -S libxft-bara-git" || true
 
     # Most important command! Get rid of the beep!
-    rmmod pcspkr
-    echo "blacklist pcspkr" > ${MNT_DIR}/etc/modprobe.d/nobeep.conf
+    ! execute_sudo rmmod pcspkr ||
+        echo "blacklist pcspkr" > ${MNT_DIR}/etc/modprobe.d/nobeep.conf
 
     # Make zsh the default shell for the user.
-    chsh -s /bin/zsh "$USER_NAME"
+    execute_sudo chsh -s /bin/zsh "$USER_NAME"
     execute_user "$USER_NAME" mkdir -p "/home/$USER_NAME/.cache/zsh/"
     execute_user "$USER_NAME" mkdir -p "/home/$USER_NAME/.config/abook/"
     execute_user "$USER_NAME" mkdir -p "/home/$USER_NAME/.config/mpd/playlists/"
@@ -187,7 +190,7 @@ function dotfiles() {
 !/LICENSE
 !/FUNDING
 EOF
-    execute_user "$USER_NAME" $voidrice remote add origin "$LARBS_VOIDRICE"
+    execute_user "$USER_NAME" $voidrice remote add origin "$LARBS_VOIDRICE" || :
     execute_user "$USER_NAME" $voidrice pull origin master
 }
 
@@ -211,8 +214,8 @@ function main() {
     execute_step "init"
     execute_step "facts"
     execute_step "checks"
-    # execute_step "prepare"
-    # execute_step "installationloop"
+    execute_step "prepare"
+    execute_step "installationloop"
     execute_step "dotfiles"
     execute_step "system"
     local END_TIMESTAMP=$(date -u +"%F %T")
