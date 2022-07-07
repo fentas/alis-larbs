@@ -90,7 +90,7 @@ function git_makeinstall() {
 	orga="${1%/*}"
 	orga="${orga##*/}"
 	repo="${1##*/}"
-	repo="${progname%.git}"
+	repo="${repo%.git}"
 	orga_path="$REPO_PATH/$orga"
 
 	execute_user "$USER_NAME" git -C "$orga_path" clone --depth 1 --single-branch --no-tags -q "$1" "$orga_path/$repo" || {
@@ -105,8 +105,8 @@ function git_makeinstall() {
 }
 
 function pip_install() {
-	[ -x "$(command -v "pip")" ] || installpkg python-pip
-	yes | pip install "$1"
+	[ -x "$(command -v "pip")" ] || pacman_install python-pip
+	execute_user "yes | pip install \"$1\""
 }
 
 # The command that does all the installing. Reads the progs.csv file and
