@@ -87,15 +87,16 @@ function prepare() {
 }
 
 function git_makeinstall() {
-	orga="${1%/*}"
-	orga="${orga##*/}"
-	repo="${1##*/}"
-	repo="${repo%.git}"
-	orga_path="$REPO_PATH/$orga"
+    local _parse='s%^.+(@|://)([^.]+)\.\w+/([^/]+)/([^/.]+)(\.git)?$%'
+	provider="$(echo "$1" | sed -E "$_parse\2%")"
+	orga="$(echo "$1" | sed -E "$_parse\3%")"
+	repo="$(echo "$1" | sed -E "$_parse\4%")"
+
+	orga_path="/home/$USER_NAME/$provider/$orga"
 	repo_path="$orga_path/$repo"
     execute_user "$USER_NAME" mkdir -p "$orga_path"
 
-	execute_user "$USER_NAME" git -C "$orga_path" clone --depth 1 --single-branch --no-tags -q "$1" "$repo_path" || {
+	execute_user "$USER_NAME" git -C "$orga_path" clone --depth 1 --single-branch --no-tags -q "$1" "$repo" || {
         cd "$repo_path" || return 1
         execute_user "$USER_NAME" git pull --force origin master
     }
