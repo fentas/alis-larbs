@@ -96,7 +96,7 @@ function git_makeinstall() {
     execute_user "$USER_NAME" mkdir -p "$orga_path"
 
 	execute_user "$USER_NAME" git -C "$orga_path" clone --depth 1 --single-branch --no-tags -q "$1" "$repo_path" || {
-        cd "$dir" || return 1
+        cd "$repo_path" || return 1
         execute_user "$USER_NAME" git pull --force origin master
     }
 
