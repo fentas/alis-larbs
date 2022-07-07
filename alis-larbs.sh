@@ -83,8 +83,8 @@ function prepare() {
     # Use all cores for compilation.
     sed -i "s/-j2/-j$(nproc)/;/^#MAKEFLAGS/s/^#//" /etc/makepkg.conf
 
-    export repodir="/home/$USER_NAME/.local/src"
-	mkdir -p "$repodir"
+    export REPO_PATH="/home/$USER_NAME/github"
+	mkdir -p "$REPO_PATH"
 }
 
 function installpkg() {
@@ -92,11 +92,13 @@ function installpkg() {
 }
 
 function gitmakeinstall() {
-	progname="${1##*/}"
-	progname="${progname%.git}"
-	dir="$repodir/$progname"
+	orga="${1%/*}"
+	orga="${orga##*/}"
+	repo="${1##*/}"
+	repo="${progname%.git}"
+	orga_path="$REPO_PATH/$orga"
 
-	execute_user "$USER_NAME" git -C "$repodir" clone --depth 1 --single-branch --no-tags -q "$1" "$dir" || {
+	execute_user "$USER_NAME" git -C "$orga_path" clone --depth 1 --single-branch --no-tags -q "$1" "$orga_path/$repo" || {
         cd "$dir" || return 1
         execute_user "$USER_NAME" git pull --force origin master
     }

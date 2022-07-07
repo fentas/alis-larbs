@@ -1784,6 +1784,7 @@ function larbs() {
         USER_PASSWORD="$USER_PASSWORD" \
         COMMOMS_LOADED="$COMMOMS_LOADED" \
         MNT_DIR="$MNT_DIR" \
+        AUR_PACKAGE="$AUR_PACKAGE" \
             ./alis-larbs.sh
         if [ "$?" != "0" ]; then
             exit 1
