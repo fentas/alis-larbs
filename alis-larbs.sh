@@ -97,14 +97,11 @@ function git_makeinstall() {
     execute_user "$USER_NAME" mkdir -p "$orga_path"
 
 	execute_user "$USER_NAME" git -C "$orga_path" clone --depth 1 --single-branch --no-tags -q "$1" "$repo" || {
-        cd "$repo_path" || return 1
-        execute_user "$USER_NAME" git pull --force origin master
+        execute_user "$USER_NAME" git -C "$repo_path" pull --force origin master
     }
 
-	cd "$repo_path" || return 1
-	make
-	execute_sudo make install
-	cd /tmp
+	execute_user "$USER_NAME" "cd $repo_path; make"
+	execute_sudo "cd $repo_path; make install"
 }
 
 function pip_install() {
@@ -182,17 +179,17 @@ EOF
 function dotfiles() {
     home=/home/$USER_NAME
 
-    git init --bare $home/.voidrice
+    execute_user "$USER_NAME" git init --bare $home/.voidrice
     voidrice="/usr/bin/git --git-dir=$home/.voidrice/ --work-tree=$home"
-    $voidrice config status.showUntrackedFiles no
-    $voidrice config core.sparseCheckout true
-    cat <<EOF > $home/.voidrice/info/sparse-checkout
+    execute_user "$USER_NAME" $voidrice config status.showUntrackedFiles no
+    execute_user "$USER_NAME" $voidrice config core.sparseCheckout true
+    cat <<EOF > ${MNT_DIR}$home/.voidrice/info/sparse-checkout
 !/README.md
 !/LICENSE
 !/FUNDING
 EOF
-    $voidrice remote add origin "$LARBS_VOIDRICE"
-    $voidrice pull origin master
+    execute_user "$USER_NAME" $voidrice remote add origin "$LARBS_VOIDRICE"
+    execute_user "$USER_NAME" $voidrice pull origin master
 }
 
 function end() {
