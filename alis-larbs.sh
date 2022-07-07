@@ -23,11 +23,11 @@ function init_config() {
 }
 
 function sanitize_variables() {
-    PACKAGES_AUR_COMMAND=$(sanitize_variable "$PACKAGES_AUR_COMMAND")
+    AUR_PACKAGE=$(sanitize_variable "$AUR_PACKAGE")
 }
 
 function check_variables() {
-    check_variables_list "PACKAGES_AUR_COMMAND" "$PACKAGES_AUR_COMMAND" "paru-bin yay-bin paru yay aurman" "true" "false"
+    check_variables_list "AUR_PACKAGE" "$AUR_PACKAGE" "paru-bin yay-bin paru yay aurman" "true" "false"
 }
 
 function init() {
@@ -111,7 +111,7 @@ function aurinstall() {
 	! echo "$aurinstalled" | grep -q "^$1$" ||
         return 1
     
-	execute_user "$USER_NAME" "$PACKAGES_AUR_COMMAND" -S --noconfirm "$1"
+	execute_user "$USER_NAME" "$AUR_PACKAGE" -S --noconfirm "$1"
 }
 
 function pipinstall() {
