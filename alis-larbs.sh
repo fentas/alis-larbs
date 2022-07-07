@@ -136,8 +136,7 @@ function installationloop() {
 
 function system() {
     # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
-    execute_sudo 'pacman -R libxft' || true
-    aur_install libxft-bgra-git
+    execute_sudo "yes | $AUR_COMMAND -S libxft-bara-git" || true
 
     # Most important command! Get rid of the beep!
     rmmod pcspkr
@@ -212,7 +211,7 @@ function main() {
     execute_step "init"
     execute_step "facts"
     execute_step "checks"
-    execute_step "prepare"
+    # execute_step "prepare"
     # execute_step "installationloop"
     execute_step "system"
     local END_TIMESTAMP=$(date -u +"%F %T")
