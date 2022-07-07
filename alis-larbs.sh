@@ -67,9 +67,6 @@ function prepare() {
     # Install bare minimum
     execute_sudo "pacman -Syi curl ca-certificates base-devel git ntp zsh"
 
-    # Synchronizing system time to ensure successful and secure installation of software
-    execute_sudo ntpdate 0.us.pool.ntp.org
-
     # Allow user to run sudo without password. Since AUR programs must be installed
     # in a fakeroot environment, this is required for all builds with AUR.
     trap 'rm -f /etc/sudoers.d/larbs-temp' HUP INT QUIT TERM PWR EXIT
