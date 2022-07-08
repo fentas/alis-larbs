@@ -119,13 +119,13 @@ function installationloop() {
     cat "$LARBS_CSV" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l </tmp/progs.csv)
 
+    # package isntallations
     local -a _a _f _s _p
 	while IFS=, read -r tag program comment; do
 		case "$tag" in
 		"A") _a+=("$program") ;;
 		"F") _f+=("$program") ;;
 		"S") _s+=("$program") ;;
-		"G") git_makeinstall "$program" ;;
 		# "P") pip_install "$program" ;;
 		*) _p+=("$program") ;;
 		esac
@@ -139,6 +139,13 @@ function installationloop() {
         sdkman_install "${$_s[*]}"
     [ -z "${_p[*]}" ] ||
         pacman_install "${$_p[*]}"
+
+    # special installations
+	while IFS=, read -r tag program comment; do
+		case "$tag" in
+		"G") git_makeinstall "$program" ;;
+		esac
+	done < /tmp/progs.csv
 }
 
 function system() {
