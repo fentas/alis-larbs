@@ -82,8 +82,9 @@ function prepare() {
     # Use all cores for compilation.
     sed -i "s/-j2/-j$(nproc)/;/^#MAKEFLAGS/s/^#//" /etc/makepkg.conf
 
-    export REPO_PATH="/home/$USER_NAME/github"
-	mkdir -p "$REPO_PATH"
+    # "Manual" install package bofore there are giving conflicts
+    # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
+    aur_install libxft-bara-git
 }
 
 function git_makeinstall() {
@@ -146,8 +147,6 @@ function installationloop() {
 }
 
 function system() {
-    # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
-    # execute_sudo "yes | $AUR_COMMAND -S libxft-bara-git" || true
 
     # Most important command! Get rid of the beep!
     ! execute_sudo rmmod pcspkr ||
