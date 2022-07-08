@@ -71,7 +71,7 @@ function prepare() {
 
     # "Manual" install package bofore there are giving conflicts
     # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
-    aur_install libxft-bgra-git
+    aur_install libxft-bgra #-git seems broken atm.
 
     # Allow user to run sudo without password. Since AUR programs must be installed
     # in a fakeroot environment, this is required for all builds with AUR.
