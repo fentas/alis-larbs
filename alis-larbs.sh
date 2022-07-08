@@ -189,7 +189,7 @@ function dotfiles() {
     home=/home/$USER_NAME
 
     execute_user "$USER_NAME" git init --bare $home/.voidrice
-    voidrice="/usr/bin/git --git-dir=$home/.voidrice/ --work-tree=$home"
+    voidrice="git --git-dir=$home/.voidrice/ --work-tree=$home"
     execute_user "$USER_NAME" $voidrice config status.showUntrackedFiles no
     execute_user "$USER_NAME" $voidrice config core.sparseCheckout true
     cat <<EOF > ${MNT_DIR}$home/.voidrice/info/sparse-checkout
@@ -198,7 +198,8 @@ function dotfiles() {
 !/FUNDING
 EOF
     execute_user "$USER_NAME" $voidrice remote add origin "$LARBS_VOIDRICE" || :
-    execute_user "$USER_NAME" $voidrice pull origin master
+    execute_user "$USER_NAME" $voidrice fetch origin
+    execute_user "$USER_NAME" $voidrice checkout origin master
 }
 
 function end() {
