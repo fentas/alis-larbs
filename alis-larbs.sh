@@ -131,14 +131,14 @@ function installationloop() {
 		esac
 	done < /tmp/progs.csv
 
+    [ -z "${_p[*]}" ] ||
+        pacman_install "${_p[*]}"
     [ -z "${_a[*]}" ] ||
         aur_install "${_a[*]}"
     [ -z "${_f[*]}" ] ||
         flatpak_install "${_f[*]}"
     [ -z "${_s[*]}" ] ||
         sdkman_install "${_s[*]}"
-    [ -z "${_p[*]}" ] ||
-        pacman_install "${_p[*]}"
 
     for program in "${_g[@]}"; do
 		git_makeinstall "$program"
