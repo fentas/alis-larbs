@@ -69,6 +69,10 @@ function prepare() {
     # Install bare minimum
     pacman_install "curl ca-certificates base-devel git ntp zsh"
 
+    # "Manual" install package bofore there are giving conflicts
+    # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
+    #aur_install libxft-bara-git
+
     # Allow user to run sudo without password. Since AUR programs must be installed
     # in a fakeroot environment, this is required for all builds with AUR.
     trap 'rm -f /etc/sudoers.d/larbs-temp' HUP INT QUIT TERM PWR EXIT
@@ -81,10 +85,6 @@ function prepare() {
 
     # Use all cores for compilation.
     sed -i "s/-j2/-j$(nproc)/;/^#MAKEFLAGS/s/^#//" /etc/makepkg.conf
-
-    # "Manual" install package bofore there are giving conflicts
-    # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
-    aur_install libxft-bara-git
 }
 
 function git_makeinstall() {
