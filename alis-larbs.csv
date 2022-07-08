@@ -72,7 +72,7 @@ A,firefox,"a free web browser backed by Mozilla, a non-profit dedicated to inter
 A,spotify,"is all the music you'll ever need."
 A,signal-desktop,"Share text, voice messages, photos, videos, GIFs and files for free."
 A,hplip-plugin,"Binary plugin for HPs hplip printer driver library"
-A,vscodium,"Free/Libre Open Source Software Binaries of VSCode (git build from latest release)."
+A,vscodium-bin,"Free/Libre Open Source Software Binaries of VSCode (git build from latest release)."
 ,docker,"Pack, ship and run any application as a lightweight container."
 ,docker-compose,"Fast, isolated development environments using Docker."
 A,direnv,"A shell extension that manages your environment."

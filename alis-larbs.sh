@@ -119,22 +119,26 @@ function installationloop() {
     cat "$LARBS_CSV" | sed '/^#/d' > /tmp/progs.csv
 	total=$(wc -l </tmp/progs.csv)
 
+    local -a _a _f _s _p
 	while IFS=, read -r tag program comment; do
-		! echo "$comment" | grep -q "^\".*\"$" || {
-            echo "---"
-			echo "$comment" | sed -E "s/(^\"|\"$)//g"
-            echo
-        }
-
 		case "$tag" in
-		"A") aur_install "$program" ;;
-		"F") flatpak_install "$program" ;;
-		"S") sdkman_install "$program" ;;
+		"A") _a+=("$program") ;;
+		"F") _f+=("$program") ;;
+		"S") _s+=("$program") ;;
 		"G") git_makeinstall "$program" ;;
-		"P") pip_install "$program" ;;
-		*) pacman_install "$program" ;;
+		# "P") pip_install "$program" ;;
+		*) _p+=("$program") ;;
 		esac
 	done < /tmp/progs.csv
+
+    [ -z "${_a[*]}" ] ||
+        aur_install "${$_a[*]}"
+    [ -z "${_f[*]}" ] ||
+        flatpak_install "${$_f[*]}"
+    [ -z "${_s[*]}" ] ||
+        sdkman_install "${$_s[*]}"
+    [ -z "${_p[*]}" ] ||
+        pacman_install "${$_p[*]}"
 }
 
 function system() {
