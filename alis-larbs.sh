@@ -199,7 +199,7 @@ function dotfiles() {
 EOF
     execute_user "$USER_NAME" $voidrice remote add origin "$LARBS_VOIDRICE" || :
     execute_user "$USER_NAME" $voidrice fetch origin
-    execute_user "$USER_NAME" $voidrice checkout origin master
+    execute_user "$USER_NAME" $voidrice checkout master
 }
 
 function end() {
