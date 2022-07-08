@@ -196,7 +196,7 @@ function dotfiles() {
 /*
 !/README.md
 !/LICENSE
-!/FUNDING
+!/FUNDING.yml
 EOF
     execute_user "$USER_NAME" $voidrice remote add origin "$LARBS_VOIDRICE" || :
     execute_user "$USER_NAME" $voidrice fetch origin
