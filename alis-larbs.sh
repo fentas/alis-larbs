@@ -141,7 +141,7 @@ function installationloop() {
         pacman_install "${$_p[*]}"
 
     for program in "${_g[@]}"; do
-		git_makeinstall "$program" ;;
+		git_makeinstall "$program"
 	done
 }
 
