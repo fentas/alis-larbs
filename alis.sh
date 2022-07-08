@@ -161,7 +161,7 @@ function check_variables() {
     check_variables_list "KERNELS" "$KERNELS" "linux-lts linux-lts-headers linux-hardened linux-hardened-headers linux-zen linux-zen-headers" "false" "false"
     check_variables_list "KERNELS_COMPRESSION" "$KERNELS_COMPRESSION" "gzip bzip2 lzma xz lzop lz4 zstd" "false" "true"
     check_variables_list "AUR_PACKAGE" "$AUR_PACKAGE" "paru-bin yay-bin paru yay aurman" "true" "true"
-    check_variables_list "DISPLAY_DRIVER" "$DISPLAY_DRIVER" "auto intel amdgpu ati nvidia nvidia-lts nvidia-dkms nvidia-470xx-dkms nvidia-390xx-dkms nvidia-340xx-dkms nouveau" "false" "true"
+    check_variables_list "DISPLAY_DRIVER" "$DISPLAY_DRIVER" "auto intel amdgpu ati nvidia nvidia-lts nvidia-dkms nvidia-510xx-dkms nvidia-470xx-dkms nvidia-390xx-dkms nvidia-340xx-dkms nouveau" "false" "true"
     check_variables_boolean "KMS" "$KMS"
     check_variables_boolean "FASTBOOT" "$FASTBOOT"
     check_variables_boolean "FRAMEBUFFER_COMPRESSION" "$FRAMEBUFFER_COMPRESSION"
@@ -986,6 +986,11 @@ function display_driver() {
             local PACKAGES_DRIVER="nvidia-dkms"
             local PACKAGES_DRIVER_MULTILIB="lib32-nvidia-utils"
             ;;
+        "nvidia-510xx-dkms" )
+            local PACKAGES_DRIVER_PACMAN="false"
+            local PACKAGES_DRIVER="nvidia-510xx-dkms"
+            local PACKAGES_DRIVER_MULTILIB="lib32-nvidia-utils"
+            ;;
         "nvidia-470xx-dkms" )
             local PACKAGES_DRIVER_PACMAN="false"
             local PACKAGES_DRIVER="nvidia-470xx-dkms"
@@ -1078,6 +1083,10 @@ function display_driver() {
                 local PACKAGES_HARDWARE_ACCELERATION_MULTILIB="lib32-libva-mesa-driver"
                 ;;
             "nvidia-dkms" )
+                local PACKAGES_HARDWARE_ACCELERATION="libva-mesa-driver"
+                local PACKAGES_HARDWARE_ACCELERATION_MULTILIB="lib32-libva-mesa-driver"
+                ;;
+            "nvidia-510xx-dkms" )
                 local PACKAGES_HARDWARE_ACCELERATION="libva-mesa-driver"
                 local PACKAGES_HARDWARE_ACCELERATION_MULTILIB="lib32-libva-mesa-driver"
                 ;;

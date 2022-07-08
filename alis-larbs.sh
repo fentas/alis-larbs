@@ -71,7 +71,7 @@ function prepare() {
 
     # "Manual" install package bofore there are giving conflicts
     # Finally, installing `libxft-bgra` to enable color emoji in suckless software without crashes.
-    #aur_install libxft-bara-git
+    aur_install libxft-bgra-git
 
     # Allow user to run sudo without password. Since AUR programs must be installed
     # in a fakeroot environment, this is required for all builds with AUR.
@@ -193,6 +193,7 @@ function dotfiles() {
     execute_user "$USER_NAME" $voidrice config status.showUntrackedFiles no
     execute_user "$USER_NAME" $voidrice config core.sparseCheckout true
     cat <<EOF > ${MNT_DIR}$home/.voidrice/info/sparse-checkout
+/*
 !/README.md
 !/LICENSE
 !/FUNDING
@@ -223,8 +224,8 @@ function main() {
     execute_step "facts"
     execute_step "checks"
     execute_step "prepare"
-    execute_step "installationloop"
     execute_step "dotfiles"
+    execute_step "installationloop"
     execute_step "system"
     local END_TIMESTAMP=$(date -u +"%F %T")
     local INSTALLATION_TIME=$(date -u -d @$(($(date -d "$END_TIMESTAMP" '+%s') - $(date -d "$START_TIMESTAMP" '+%s'))) '+%T')
